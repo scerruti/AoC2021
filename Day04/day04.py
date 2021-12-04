@@ -6,11 +6,8 @@ def earliest_win(card):
 
 
 def read_card(f, called_numbers):
-    rows = []
-    for i in range(5):
-        rows.append([called_numbers.index(int(spot))
-                     for spot in f.readline().split()])
-    return rows
+    return [[called_numbers.index(int(spot))
+                     for spot in f.readline().split()] for i in range(5)]
 
 
 def read_boards(file_name):
