@@ -1,15 +1,8 @@
 def earliest_win(card):
-    wins_at = max(card[0])
-    for row_number in range(1, 5):
-        highest_in_row = max(card[row_number])
-        if highest_in_row < wins_at:
-            wins_at = highest_in_row
-
-    for column_number in range(5):
-        highest_in_column = max([row[column_number] for row in card])
-        if highest_in_column < wins_at:
-            wins_at = highest_in_column
-    return wins_at
+    wins_at = [max(row) for row in card]
+    wins_at.extend([max([row[column_number] for row in card]) for column_number in range(5)])
+    turn = min(wins_at)
+    return turn
 
 
 def read_card(f, called_numbers):
@@ -31,13 +24,7 @@ def read_boards(file_name):
 
 
 def part1(called_numbers, bingo_cards):
-    first_win = len(called_numbers)
-    winning_card = None
-    for card in bingo_cards:
-        win = earliest_win(card)
-        if win < first_win:
-            first_win = win
-            winning_card = card
+    first_win, winning_card = min([(earliest_win(card), card) for card in bingo_cards])
 
     score = called_numbers[first_win] * sum(
         [called_numbers[spot] for row in winning_card for spot in row if spot > first_win])
@@ -45,13 +32,7 @@ def part1(called_numbers, bingo_cards):
 
 
 def part2(called_numbers, bingo_cards):
-    last_win = 0
-    winning_card = None
-    for card in bingo_cards:
-        win = earliest_win(card)
-        if win > last_win:
-            last_win = win
-            winning_card = card
+    last_win, winning_card = max([(earliest_win(card), card) for card in bingo_cards])
 
     score = called_numbers[last_win] * sum(
         [called_numbers[spot] for row in winning_card for spot in row if spot > last_win])
