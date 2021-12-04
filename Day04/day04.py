@@ -5,9 +5,14 @@ def earliest_win(card):
     return turn
 
 
+def score(called_numbers, card, turn):
+    return called_numbers[turn] * sum(
+        [called_numbers[spot] for row in card for spot in row if spot > turn])
+
+
 def read_card(f, called_numbers):
     return [[called_numbers.index(int(spot))
-                     for spot in f.readline().split()] for i in range(5)]
+             for spot in f.readline().split()] for _ in range(5)]
 
 
 def read_boards(file_name):
@@ -22,18 +27,12 @@ def read_boards(file_name):
 
 def part1(called_numbers, bingo_cards):
     first_win, winning_card = min([(earliest_win(card), card) for card in bingo_cards])
-
-    score = called_numbers[first_win] * sum(
-        [called_numbers[spot] for row in winning_card for spot in row if spot > first_win])
-    print(score)
+    print(score(called_numbers, winning_card, first_win))
 
 
 def part2(called_numbers, bingo_cards):
     last_win, winning_card = max([(earliest_win(card), card) for card in bingo_cards])
-
-    score = called_numbers[last_win] * sum(
-        [called_numbers[spot] for row in winning_card for spot in row if spot > last_win])
-    print(score)
+    print(score(called_numbers, winning_card, last_win))
 
 
 if __name__ == '__main__':
