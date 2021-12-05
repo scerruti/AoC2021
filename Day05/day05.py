@@ -26,23 +26,18 @@ def add_line(vent_map, result):
         y += y_step
 
 
-
 def read_lines(file_name):
     vent_map = {}
-    prog = re.compile(r'(\d+),(\d+) -> (\d+),(\d+)')
+    program = re.compile(r'(\d+),(\d+) -> (\d+),(\d+)')
     with open(file_name, "r") as f:
-        for line in  f.readlines():
-            result = prog.match(line)
+        for line in f.readlines():
+            result = program.match(line)
             add_line(vent_map, result)
     return vent_map
 
 
 def part1(vent_map):
     print(len([vent for vent in vent_map.values() if vent > 1]))
-
-
-def part2(vent_map):
-    pass
 
 
 def print_map(vent_map):
@@ -54,7 +49,7 @@ def print_map(vent_map):
 
     for y in range(min_row, max_row+1):
         for x in range(min_col, max_col + 1):
-            print(vent_map[(x, y)] if (x,y) in vent_map else '.', end='')
+            print(vent_map[(x, y)] if (x, y) in vent_map else '.', end='')
         print()
 
 
@@ -62,4 +57,3 @@ if __name__ == '__main__':
     vents = read_lines('input.txt')
     print_map(vents)
     part1(vents)
-    part2(vents)
