@@ -1,12 +1,11 @@
 import re
 
 
-def add_line(vent_map, result):
-    x1 = int(result.group(1))
-    y1 = int(result.group(2))
-    x2 = int(result.group(3))
-    y2 = int(result.group(4))
-
+def add_line(vent_map, points):
+    x1  = int(points[0][0])
+    y1  = int(points[0][1])
+    x2  = int(points[1][0])
+    y2  = int(points[1][1])
     rise = (y2 - y1)
     run = (x2 - x1)
 
@@ -26,13 +25,25 @@ def add_line(vent_map, result):
         y += y_step
 
 
+def add_line_from_regex(vent_map, result):
+    x1 = int(result.group(1))
+    y1 = int(result.group(2))
+    x2 = int(result.group(3))
+    y2 = int(result.group(4))
+    add_line(vent_map, [[x1, y1], [x2, y2]])
+
+
 def read_lines(file_name):
     vent_map = {}
-    program = re.compile(r'(\d+),(\d+) -> (\d+),(\d+)')
+    # program = re.compile(r'(\d+),(\d+) -> (\d+),(\d+)')
+    # with open(file_name, "r") as f:
+    #     for line in f.readlines():
+    #         result = program.match(line)
+    #         add_line(vent_map, result)
     with open(file_name, "r") as f:
         for line in f.readlines():
-            result = program.match(line)
-            add_line(vent_map, result)
+            points = [p.split(',') for p in line.split(' -> ')]
+            add_line(vent_map, points)
     return vent_map
 
 
@@ -54,6 +65,6 @@ def print_map(vent_map):
 
 
 if __name__ == '__main__':
-    vents = read_lines('input.txt')
+    vents = read_lines('test_input.txt')
     print_map(vents)
     part1(vents)
